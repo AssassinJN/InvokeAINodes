@@ -54,6 +54,13 @@ class SaveToDiskInvocation(BaseInvocation):
         else:
             name = self.output_name + ".png"
             out_path = os.path.join(self.output_dir, name)
+        count = 0
+        while os.path.isfile(out_path):
+            count = count + 1
+            countstr = str(count)
+            name = self.output_name + "_" + countstr.zfill(5) + ".png"
+            out_path = os.path.join(self.output_dir, name)
+
         picture = picture.save(out_path)
 
         image_dto = context.services.images.get_dto(self.input_image.image_name)
