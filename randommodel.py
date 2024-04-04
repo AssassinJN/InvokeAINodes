@@ -1,9 +1,9 @@
 from invokeai.app.invocations.baseinvocation import (
     BaseInvocation,
-    InvocationContext,
     invocation,
-    InputField,
 )
+from invokeai.app.services.shared.invocation_context import InvocationContext
+from invokeai.app.invocations.fields import InputField
 from invokeai.app.invocations.primitives import (
     StringCollectionOutput,
 )
