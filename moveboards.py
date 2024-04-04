@@ -1,15 +1,12 @@
-from invokeai.app.invocations.baseinvocation import (
+from invokeai.invocation_api import (
     BaseInvocation,
+    InvocationContext,
     invocation,
-)
-from invokeai.app.services.shared.invocation_context import InvocationContext
-from invokeai.app.invocations.primitives import ImageOutput
-from invokeai.app.invocations.fields import (
-    ImageField,
     InputField,
+    ImageField,
+    ImageOutput,
     BoardField,
 )
-
 
 
 from pydantic import BaseModel
@@ -35,9 +32,9 @@ class MoveBoardsInvocation(BaseInvocation):
     )
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
-        context.services.board_images.remove_image_from_board(self.input_image.image_name)
-        context.services.board_images.add_image_to_board(self.output_board.board_id, self.input_image.image_name)
-        image_dto = context.services.images.get_dto(self.input_image.image_name)
+        context._services.board_images.remove_image_from_board(self.input_image.image_name)
+        context._services.board_images.add_image_to_board(self.output_board.board_id, self.input_image.image_name)
+        image_dto = context.images.get_dto(self.input_image.image_name)
         return ImageOutput(
             image=ImageField(image_name=self.input_image.image_name),
             width=image_dto.width,

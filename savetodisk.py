@@ -1,13 +1,10 @@
-from invokeai.app.invocations.fields import (
-    ImageField,
-    InputField,
-)
-from invokeai.app.services.shared.invocation_context import InvocationContext
-from invokeai.app.invocations.primitives import ImageOutput
-
-from invokeai.app.invocations.baseinvocation import (
+from invokeai.invocation_api import (
     BaseInvocation,
+    InvocationContext,
     invocation,
+    InputField,
+    ImageField,
+    ImageOutput,
 )
 import os
 from pydantic import BaseModel
@@ -48,7 +45,7 @@ class SaveToDiskInvocation(BaseInvocation):
     def invoke(self, context: InvocationContext) -> ImageOutput:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
-        picture = context.services.images.get_pil_image(self.input_image.image_name)
+        picture = context.images.get_pil(self.input_image.image_name)
         if self.output_name == "":
             out_path = os.path.join(self.output_dir, self.input_image.image_name)
         else:
@@ -63,7 +60,7 @@ class SaveToDiskInvocation(BaseInvocation):
 
         picture = picture.save(out_path)
 
-        image_dto = context.services.images.get_dto(self.input_image.image_name)
+        image_dto = context.images.get_dto(self.input_image.image_name)
         return ImageOutput(
             image=ImageField(image_name=self.input_image.image_name),
             width=image_dto.width,

@@ -1,10 +1,8 @@
-from invokeai.app.invocations.baseinvocation import (
+from invokeai.invocation_api import (
     BaseInvocation,
+    InvocationContext,
     invocation,
-)
-from invokeai.app.services.shared.invocation_context import InvocationContext
-from invokeai.app.invocations.fields import InputField
-from invokeai.app.invocations.primitives import (
+    InputField,
     StringOutput,
 )
 
